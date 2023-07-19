@@ -1,0 +1,23 @@
+本文件是对proto文件的详细解释。
+
+service ASR {  //grpc service
+  rpc Recognize (stream Request) returns (stream Response) {}  //Stub
+}
+
+message Request {
+  bytes audio_data = 1;  //录音数据,格式：bytes
+  string user = 2;   //用户名，格式：字符串，例如：zksz_project1，具体由server端提供
+  string language = 3;  //语言种类，可以设置为：  zh-CN
+  bool speaking = 4;  //是否在说话的标志。vad判断为说话时，speaking=True & isEnd = False, 语音流会实时累积; vad判断为静音时(一句话结束)，speaking=False & isEnd = False, 立即转存已经累积的语音流至临时data, 清空累积,识别临时data。
+  bool isEnd = 5;  //进行asr时，isEnd = False; 停止整个asr调用时，isEnd = True。
+  string access_token = 6; // motinverse应用鉴权token，发送语音数据之前：speaking = false & isEnd = true，传access_token，其他时候access_token=''
+}
+
+message Response {
+  string sentence = 1;  //json格式，包含success：True|False标志位 （False代表有错误）;包含text：识别出的文本。
+  string user = 2; // 同Request中的user
+  string language = 3; //同Request中的language
+  string action = 4; //server端的动作，供客户端了解server运行状态，定义有：terminate：终止识别; speaking：客户端正在说话, server端累积语音流; decoding: server端开始计算解码; finish:完成一句话的识别，内含识别结果text, 最常用。
+  int32 code = 5;    // 状态码
+  string msg = 6;    // 提示信息
+}
