@@ -1,0 +1,27 @@
+{
+  "name": "poc-grpc-asr",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "proto": "protoc -I=./src/proto/ paraformer.proto --js_out=import_style=commonjs,binary:./src/proto/ --grpc-web_out=import_style=commonjs,mode=grpcwebtext:./src/proto/"
+  },
+  "dependencies": {
+    "axios": "^1.2.0",
+    "core-js": "^3.8.3",
+    "google-protobuf": "^3.21.2",
+    "grpc-web": "^1.4.2",
+    "protobufjs": "^7.2.3",
+    "recorder-core": "^1.2.22080700",
+    "vue": "^3.2.13",
+    "vue-router": "^4.0.3"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~5.0.0",
+    "@vue/cli-plugin-router": "~5.0.0",
+    "@vue/cli-service": "~5.0.0",
+    "sass": "^1.32.7",
+    "sass-loader": "^12.0.0"
+  }
+}
